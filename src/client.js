@@ -53,8 +53,8 @@ export const DEFAULT_CLIENT_ID = {
 export default class Client {
   constructor (host, port, options = {}) {
     this.timeoutConnection = TIMEOUT_CONNECTION
-    this.timeoutNoop = TIMEOUT_NOOP
-    this.timeoutIdle = TIMEOUT_IDLE
+    this.timeoutNoop = options.timeoutNoop || TIMEOUT_NOOP
+    this.timeoutIdle = options.timeoutIdle || TIMEOUT_IDLE
 
     this.serverId = false // RFC 2971 Server ID as key value pairs
 
@@ -76,6 +76,7 @@ export default class Client {
     this._auth = options.auth
     this._requireTLS = !!options.requireTLS
     this._ignoreTLS = !!options.ignoreTLS
+    this._ignoreIdleCapability = !!options.ignoreIdleCapability
 
     this.client = new ImapClient(host, port, options) // IMAP client object
 
@@ -706,7 +707,7 @@ export default class Client {
     if (this._enteredIdle) {
       return
     }
-    this._enteredIdle = this._capability.indexOf('IDLE') >= 0 ? 'IDLE' : 'NOOP'
+    this._enteredIdle = !this._ignoreIdleCapability && this._capability.indexOf('IDLE') >= 0 ? 'IDLE' : 'NOOP'
     this.logger.debug('Entering idle with ' + this._enteredIdle)
 
     if (this._enteredIdle === 'NOOP') {
