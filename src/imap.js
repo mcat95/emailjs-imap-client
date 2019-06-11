@@ -64,7 +64,6 @@ export default class Imap {
     this.timeoutEnterIdle = TIMEOUT_ENTER_IDLE
     this.timeoutSocketLowerBound = TIMEOUT_SOCKET_LOWER_BOUND
     this.timeoutSocketMultiplier = TIMEOUT_SOCKET_MULTIPLIER
-    this.onDataTimeout = this.timeoutSocketLowerBound + Math.floor(4096 * this.timeoutSocketMultiplier)
 
     this.options = options
 
@@ -105,7 +104,7 @@ export default class Imap {
     this.oncert = null
     this.onerror = null // Irrecoverable error occurred. Connection to the server will be closed automatically.
     this.onready = null // The connection to the server has been established and greeting is received
-    this.onidle = null  // There are no more commands to process
+    this.onidle = null // There are no more commands to process
   }
 
   // PUBLIC METHODS
@@ -135,7 +134,7 @@ export default class Imap {
       } catch (E) { }
 
       // Connection closing unexpected is an error
-      this.socket.onclose = () => this._onError(new Error('Socket closed unexceptedly!'))
+      this.socket.onclose = () => this._onError(new Error('Socket closed unexpectedly!'))
       this.socket.ondata = (evt) => {
         try {
           this._onData(evt)
@@ -399,7 +398,8 @@ export default class Imap {
    */
   _onData (evt) {
     clearTimeout(this._socketTimeoutTimer) // reset the timeout on each data packet
-    this._socketTimeoutTimer = setTimeout(() => this._onError(new Error(' Socket timed out!')), this.ON_DATA_TIMEOUT)
+    const timeout = this.timeoutSocketLowerBound + Math.floor(4096 * this.timeoutSocketMultiplier) // max packet size is 4096 bytes
+    this._socketTimeoutTimer = setTimeout(() => this._onError(new Error(' Socket timed out!')), timeout)
 
     this._incomingBuffers.push(new Uint8Array(evt.data)) // append to the incoming buffer
     this._parseIncomingCommands(this._iterateIncomingBuffer()) // Consume the incoming buffer

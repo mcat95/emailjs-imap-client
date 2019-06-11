@@ -313,7 +313,7 @@ export default class Client {
       const path = pathOr('', ['2', 'value'], attr)
       const delim = pathOr('/', ['1', 'value'], attr)
       const branch = this._ensurePath(tree, path, delim)
-      branch.flags = propOr([], '0', attr).map(({value}) => value || '')
+      branch.flags = propOr([], '0', attr).map(({ value }) => value || '')
       branch.listed = true
       checkSpecialUse(branch)
     })
@@ -357,6 +357,23 @@ export default class Client {
       }
       throw err
     }
+  }
+
+  /**
+   * Delete a mailbox with the given path.
+   *
+   * DELETE details:
+   *   https://tools.ietf.org/html/rfc3501#section-6.3.4
+   *
+   * @param {String} path
+   *     The path of the mailbox you would like to delete.  This method will
+   *     handle utf7 encoding for you.
+   * @returns {Promise}
+   *     Promise resolves if mailbox was deleted.
+   */
+  deleteMailbox (path) {
+    this.logger.debug('Deleting mailbox', path, '...')
+    return this.exec({ command: 'DELETE', attributes: [imapEncode(path)] })
   }
 
   /**
@@ -641,7 +658,7 @@ export default class Client {
     }
 
     this.logger.debug('Logging in...')
-    const response = this.exec(command, 'capability', options)
+    const response = await this.exec(command, 'capability', options)
     /*
      * update post-auth capabilites
      * capability list shouldn't contain auth related stuff anymore
@@ -805,7 +822,7 @@ export default class Client {
   _untaggedCapabilityHandler (response) {
     this._capability = pipe(
       propOr([], 'attributes'),
-      map(({value}) => (value || '').toUpperCase().trim())
+      map(({ value }) => (value || '').toUpperCase().trim())
     )(response)
   }
 
@@ -926,7 +943,7 @@ export default class Client {
   }
 
   createLogger (creator = createDefaultLogger) {
-    const logger = creator(this._auth.user || '', this._host)
+    const logger = creator((this._auth || {}).user || '', this._host)
     this.logger = this.client.logger = {
       debug: (...msgs) => { if (LOG_LEVEL_DEBUG >= this.logLevel) { logger.debug(msgs) } },
       info: (...msgs) => { if (LOG_LEVEL_INFO >= this.logLevel) { logger.info(msgs) } },

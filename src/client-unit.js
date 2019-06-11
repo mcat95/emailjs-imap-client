@@ -75,7 +75,7 @@ describe('browserbox unit tests', () => {
       br.updateCapability.returns(Promise.resolve())
       br.upgradeConnection.returns(Promise.resolve())
       br.updateId.returns(Promise.resolve())
-      br.login.returns(Promise.reject(new Error()))
+      br.login.throws(new Error())
 
       setTimeout(() => br.client.onready(), 0)
       br.connect().catch((err) => {
@@ -567,6 +567,35 @@ describe('browserbox unit tests', () => {
       }).returns(Promise.reject(fakeErr))
 
       return br.createMailbox('mailboxname').then(() => {
+        expect(br.exec.callCount).to.equal(1)
+      })
+    })
+  })
+
+  describe('#deleteMailbox', () => {
+    beforeEach(() => {
+      sinon.stub(br, 'exec')
+    })
+
+    it('should call DELETE with a string payload', () => {
+      br.exec.withArgs({
+        command: 'DELETE',
+        attributes: ['mailboxname']
+      }).returns(Promise.resolve())
+
+      return br.deleteMailbox('mailboxname').then(() => {
+        expect(br.exec.callCount).to.equal(1)
+      })
+    })
+
+    it('should call mutf7 encode the argument', () => {
+      // From RFC 3501
+      br.exec.withArgs({
+        command: 'DELETE',
+        attributes: ['~peter/mail/&U,BTFw-/&ZeVnLIqe-']
+      }).returns(Promise.resolve())
+
+      return br.deleteMailbox('~peter/mail/\u53f0\u5317/\u65e5\u672c\u8a9e').then(() => {
         expect(br.exec.callCount).to.equal(1)
       })
     })

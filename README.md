@@ -1,5 +1,18 @@
 # emailjs-imap-client
 
+## HELP WANTED
+
+Felix is not actively maintaining this library anymore. But this is the only IMAP client for JS that I am aware of, so I feel this library still has its value. Please let me know if you're interested in helping out, either via email or open an issue about that.
+
+The work that's on the horizon is:
+
+* Removing the [tcp-socket shim](https://github.com/emailjs/emailjs-tcp-socket) and use node's `net` and `tls` directly
+* Adding features as per requests
+* Refactor to allow streaming and cut down memory consumption
+* Stay up to date with developments in the IMAP protocol
+* Maintenance of the other related emailjs libraries
+* Maintenance and update of [emailjs.org](https://emailjs.org)
+
 [![npm](https://img.shields.io/npm/v/emailjs-tcp-socket.svg)](https://github.com/emailjs/emailjs-imap-client) [![Greenkeeper badge](https://badges.greenkeeper.io/emailjs/emailjs-imap-client.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/emailjs/emailjs-imap-client.png?branch=master)](https://travis-ci.org/emailjs/emailjs-imap-client) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)  [![ES6+](https://camo.githubusercontent.com/567e52200713e0f0c05a5238d91e1d096292b338/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f65732d362b2d627269676874677265656e2e737667)](https://kangax.github.io/compat-table/es6/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Low-level IMAP client for all your IMAP needs.
@@ -11,6 +24,9 @@ npm install --save emailjs-imap-client
 ```
 ```javascript
 import ImapClient from 'emailjs-imap-client'
+
+// Use this instead for CommonJS modules (Node.js)
+var ImapClient = require('emailjs-imap-client').default
 ```
 
 ## API
@@ -231,6 +247,17 @@ client.createMailbox('INBOX/Foo').then(() => { ... });
 
 // Do the same on a server where the personal namespace is ''
 client.createMailbox('Foo').then(() => { ... });
+```
+## Delete mailbox
+
+Delete a folder with the given path with `deleteMailbox(path)`, automatically handling utf-7 encoding.
+
+Command: [DELETE](http://tools.ietf.org/html/rfc3501#section-6.3.4)
+
+Example
+
+```javascript
+client.deleteMailbox('Foo').then(() => { ... });
 ```
 
 ## Select mailbox
