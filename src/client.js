@@ -1,6 +1,8 @@
 import { map, pipe, union, zip, fromPairs, propOr, pathOr, flatten } from 'ramda'
-import { imapEncode, imapDecode } from 'emailjs-utf7'
+import { imapDecode } from 'emailjs-utf7'
 import {
+  parseAPPEND,
+  parseCOPY,
   parseNAMESPACE,
   parseSELECT,
   parseFETCH,
@@ -116,15 +118,13 @@ export default class Client {
   //
 
   /**
-   * Initiate connection to the IMAP server
+   * Initiate connection and login to the IMAP server
    *
    * @returns {Promise} Promise when login procedure is complete
    */
   async connect () {
     try {
-      await this._openConnection()
-      this._changeState(STATE_NOT_AUTHENTICATED)
-      await this.updateCapability()
+      await this.openConnection()
       await this.upgradeConnection()
       try {
         await this.updateId(this._clientId)
@@ -143,9 +143,14 @@ export default class Client {
     }
   }
 
-  _openConnection () {
+  /**
+   * Initiate connection to the IMAP server
+   *
+   * @returns {Promise} capability of server without login
+   */
+  openConnection () {
     return new Promise((resolve, reject) => {
-      let connectionTimeout = setTimeout(() => reject(new Error('Timeout connecting to server')), this.timeoutConnection)
+      const connectionTimeout = setTimeout(() => reject(new Error('Timeout connecting to server')), this.timeoutConnection)
       this.logger.debug('Connecting to', this.client.host, ':', this.client.port)
       this._changeState(STATE_CONNECTING)
       this.client.connect().then(() => {
@@ -153,7 +158,9 @@ export default class Client {
 
         this.client.onready = () => {
           clearTimeout(connectionTimeout)
-          resolve()
+          this._changeState(STATE_NOT_AUTHENTICATED)
+          this.updateCapability()
+            .then(() => resolve(this._capability))
         }
 
         this.client.onerror = (err) => {
@@ -211,7 +218,7 @@ export default class Client {
     this.logger.debug('Updating id...')
 
     const command = 'ID'
-    const attributes = id ? [ flatten(Object.entries(id)) ] : [ null ]
+    const attributes = id ? [flatten(Object.entries(id))] : [null]
     const response = await this.exec({ command, attributes }, 'ID')
     const list = flatten(pathOr([], ['payload', 'ID', '0', 'attributes', '0'], response).map(Object.values))
     const keys = list.filter((_, i) => i % 2 === 0)
@@ -249,7 +256,7 @@ export default class Client {
    * @returns {Promise} Promise with information about the selected mailbox
    */
   async selectMailbox (path, options = {}) {
-    let query = {
+    const query = {
       command: options.readOnly ? 'EXAMINE' : 'SELECT',
       attributes: [{ type: 'STRING', value: path }]
     }
@@ -260,7 +267,7 @@ export default class Client {
 
     this.logger.debug('Opening', path, '...')
     const response = await this.exec(query, ['EXISTS', 'FLAGS', 'OK'], { ctx: options.ctx })
-    let mailboxInfo = parseSELECT(response)
+    const mailboxInfo = parseSELECT(response)
 
     this._changeState(STATE_SELECTED)
 
@@ -273,6 +280,38 @@ export default class Client {
     }
 
     return mailboxInfo
+  }
+
+  /**
+   * Subscribe to a mailbox with the given path
+   *
+   * SUBSCRIBE details:
+   *   https://tools.ietf.org/html/rfc3501#section-6.3.6
+   *
+   * @param {String} path
+   *     The path of the mailbox you would like to subscribe to.
+   * @returns {Promise}
+   *     Promise resolves if mailbox is now subscribed to or was so already.
+   */
+  async subscribeMailbox (path) {
+    this.logger.debug('Subscribing to mailbox', path, '...')
+    return this.exec({ command: 'SUBSCRIBE', attributes: [path] })
+  }
+
+  /**
+   * Unsubscribe from a mailbox with the given path
+   *
+   * UNSUBSCRIBE details:
+   *   https://tools.ietf.org/html/rfc3501#section-6.3.7
+   *
+   * @param {String} path
+   *     The path of the mailbox you would like to unsubscribe from.
+   * @returns {Promise}
+   *     Promise resolves if mailbox is no longer subscribed to or was not before.
+   */
+  async unsubscribeMailbox (path) {
+    this.logger.debug('Unsubscribing to mailbox', path, '...')
+    return this.exec({ command: 'UNSUBSCRIBE', attributes: [path] })
   }
 
   /**
@@ -342,8 +381,7 @@ export default class Client {
    *   http://tools.ietf.org/html/rfc3501#section-6.3.3
    *
    * @param {String} path
-   *     The path of the mailbox you would like to create.  This method will
-   *     handle utf7 encoding for you.
+   *     The path of the mailbox you would like to create.
    * @returns {Promise}
    *     Promise resolves if mailbox was created.
    *     In the event the server says NO [ALREADYEXISTS], we treat that as success.
@@ -351,7 +389,7 @@ export default class Client {
   async createMailbox (path) {
     this.logger.debug('Creating mailbox', path, '...')
     try {
-      await this.exec({ command: 'CREATE', attributes: [imapEncode(path)] })
+      await this.exec({ command: 'CREATE', attributes: [path] })
     } catch (err) {
       if (err && err.code === 'ALREADYEXISTS') {
         return
@@ -367,14 +405,13 @@ export default class Client {
    *   https://tools.ietf.org/html/rfc3501#section-6.3.4
    *
    * @param {String} path
-   *     The path of the mailbox you would like to delete.  This method will
-   *     handle utf7 encoding for you.
+   *     The path of the mailbox you would like to delete.
    * @returns {Promise}
    *     Promise resolves if mailbox was deleted.
    */
   deleteMailbox (path) {
     this.logger.debug('Deleting mailbox', path, '...')
-    return this.exec({ command: 'DELETE', attributes: [imapEncode(path)] })
+    return this.exec({ command: 'DELETE', attributes: [path] })
   }
 
   /**
@@ -486,9 +523,9 @@ export default class Client {
    * @param {Array} options.flags Any flags you want to set on the uploaded message. Defaults to [\Seen]. (optional)
    * @returns {Promise} Promise with the array of matching seq. or uid numbers
    */
-  upload (destination, message, options = {}) {
-    let flags = propOr(['\\Seen'], 'flags', options).map(value => ({ type: 'atom', value }))
-    let command = {
+  async upload (destination, message, options = {}) {
+    const flags = propOr(['\\Seen'], 'flags', options).map(value => ({ type: 'atom', value }))
+    const command = {
       command: 'APPEND',
       attributes: [
         { type: 'atom', value: destination },
@@ -498,7 +535,8 @@ export default class Client {
     }
 
     this.logger.debug('Uploading message to', destination, '...')
-    return this.exec(command)
+    const response = await this.exec(command)
+    return parseAPPEND(response)
   }
 
   /**
@@ -548,7 +586,7 @@ export default class Client {
    */
   async copyMessages (path, sequence, destination, options = {}) {
     this.logger.debug('Copying messages', sequence, 'from', path, 'to', destination, '...')
-    const { humanReadable } = await this.exec({
+    const response = await this.exec({
       command: options.byUid ? 'UID COPY' : 'COPY',
       attributes: [
         { type: 'sequence', value: sequence },
@@ -557,7 +595,7 @@ export default class Client {
     }, null, {
       precheck: (ctx) => this._shouldSelectMailbox(path, ctx) ? this.selectMailbox(path, { ctx }) : Promise.resolve()
     })
-    return humanReadable || 'COPY completed'
+    return parseCOPY(response)
   }
 
   /**
@@ -632,7 +670,7 @@ export default class Client {
    */
   async login (auth) {
     let command
-    let options = {}
+    const options = {}
 
     if (!auth) {
       throw new Error('Authentication information not provided')
@@ -707,7 +745,7 @@ export default class Client {
     if (this._enteredIdle) {
       return
     }
-    this._enteredIdle = !this._ignoreIdleCapability && this._capability.indexOf('IDLE') >= 0 ? 'IDLE' : 'NOOP'
+    this._enteredIdle = !this._ignoreIdleCapability && this._selectedMailbox && this._capability.indexOf('IDLE') >= 0 ? 'IDLE' : 'NOOP'
     this.logger.debug('Entering idle with ' + this._enteredIdle)
 
     if (this._enteredIdle === 'NOOP') {
@@ -834,7 +872,7 @@ export default class Client {
    * @param {Function} next Until called, server responses are not processed
    */
   _untaggedExistsHandler (response) {
-    if (response && response.hasOwnProperty('nr')) {
+    if (response && Object.prototype.hasOwnProperty.call(response, 'nr')) {
       this.onupdate && this.onupdate(this._selectedMailbox, 'exists', response.nr)
     }
   }
@@ -846,7 +884,7 @@ export default class Client {
    * @param {Function} next Until called, server responses are not processed
    */
   _untaggedExpungeHandler (response) {
-    if (response && response.hasOwnProperty('nr')) {
+    if (response && Object.prototype.hasOwnProperty.call(response, 'nr')) {
       this.onupdate && this.onupdate(this._selectedMailbox, 'expunge', response.nr)
     }
   }
