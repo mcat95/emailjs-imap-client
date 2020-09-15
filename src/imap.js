@@ -535,6 +535,7 @@ export default class Imap {
        *   https://tools.ietf.org/html/rfc3501#section-2.2.1
        */
       //
+      if (command.length === 0) continue
       if (command[0] === ASCII_PLUS) {
         if (this._currentCommand.data.length) {
           // feed the next chunk of data
