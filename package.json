@@ -25,7 +25,7 @@
   "dependencies": {
     "emailjs-addressparser": "^2.0.2",
     "emailjs-base64": "^1.1.4",
-    "emailjs-imap-handler": "^3.0.2",
+    "emailjs-imap-handler": "github:MarcoCatalan/emailjs-imap-handler.git#build",
     "emailjs-mime-codec": "^2.0.8",
     "emailjs-tcp-socket": "github:MarcoCatalan/emailjs-tcp-socket.git#build",
     "emailjs-utf7": "^4.0.1",
