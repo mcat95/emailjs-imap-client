@@ -124,7 +124,8 @@ export default class Imap {
       this.socket = Socket.open(this.host, this.port, {
         binaryType: 'arraybuffer',
         useSecureTransport: this.secureMode,
-        ca: this.options.ca
+        ca: this.options.ca,
+        minTLSVersion: this.options.minTLSVersion
       })
 
       // allows certificate handling for platform w/o native tls support
