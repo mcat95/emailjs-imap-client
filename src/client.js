@@ -358,7 +358,10 @@ export default class Client {
       checkSpecialUse(branch)
     })
 
-    const lsubResponse = await this.exec({ command: 'LSUB', attributes: ['', '*'] }, 'LSUB')
+    const lsubResponse = await this.exec({ command: 'LSUB', attributes: ['', '*'] }, 'LSUB').catch(err => {
+      this.logger.warn('LSUB command failed: ', err)
+      return null
+    })
     const lsub = pathOr([], ['payload', 'LSUB'], lsubResponse)
     lsub.forEach((item) => {
       const attr = propOr([], 'attributes', item)
