@@ -1,0 +1,14 @@
+[16:00:19.765] Global cache location '/home/marco/.cache/typescript/4.2', safe file path '/usr/local/lib/node_modules/typescript/lib/typingSafeList.json', types map path /usr/local/lib/node_modules/typescript/lib/typesMap.json
+[16:00:19.765] Processing cache location '/home/marco/.cache/typescript/4.2'
+[16:00:19.765] Trying to find '/home/marco/.cache/typescript/4.2/package.json'...
+[16:00:19.774] Unhandled exception: SyntaxError: Unexpected end of JSON input at SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at NodeTypingsInstaller.TypingsInstaller.processCacheLocation (/usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115021:44)
+    at NodeTypingsInstaller.TypingsInstaller (/usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:114937:26)
+    at new NodeTypingsInstaller (/usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115391:40)
+    at /usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115535:29
+    at /usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115542:11
+    at /usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115543:7
+    at Object.<anonymous> (/usr/local/lib/node_modules/typescript/lib/typingsInstaller.js:115544:3)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1180:10)

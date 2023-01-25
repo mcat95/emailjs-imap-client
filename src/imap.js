@@ -1,5 +1,5 @@
 import { propOr } from 'ramda'
-import TCPSocket from 'emailjs-tcp-socket'
+import TCPSocket from './node-socket'
 import { toTypedArray, fromTypedArray } from './common'
 import { parser, compiler } from 'emailjs-imap-handler'
 import Compression from './compression'
