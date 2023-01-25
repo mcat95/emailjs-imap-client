@@ -125,7 +125,8 @@ export default class Imap {
         binaryType: 'arraybuffer',
         useSecureTransport: this.secureMode,
         ca: this.options.ca,
-        minTLSVersion: this.options.minTLSVersion
+        minTLSVersion: this.options.minTLSVersion,
+        maxTLSVersion: this.options.maxTLSVersion
       })
 
       // allows certificate handling for platform w/o native tls support
