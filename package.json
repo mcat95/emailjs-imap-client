@@ -28,12 +28,12 @@
     "emailjs-base64": "^1.1.4",
     "emailjs-imap-handler": "github:Walcu-Engineering/emailjs-imap-handler.git#build",
     "emailjs-mime-codec": "^2.0.8",
-    "emailjs-tcp-socket": "github:mcat95/emailjs-tcp-socket.git#build",
     "emailjs-utf7": "^4.0.1",
     "pako": "^1.0.10",
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.20.7",
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/register": "^7.8.3",

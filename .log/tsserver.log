@@ -1,0 +1,101 @@
+Info 0    [16:00:19.608] Starting TS Server
+Info 1    [16:00:19.608] Version: 4.2.4
+Info 2    [16:00:19.608] Arguments: /home/marco/.nvm/versions/node/v16.17.0/bin/node /usr/local/bin/tsserver --logFile /home/marco/git/emailjs-imap-client/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/fc0ba051b001257eef093d2315ccf1e4/tscancellation*
+Info 3    [16:00:19.608] Platform: linux NodeVersion: 16 CaseSensitive: true
+Info 4    [16:00:19.608] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [16:00:19.621] Search path: /home/marco/git/emailjs-imap-client/src
+Info 6    [16:00:19.621] For info: /home/marco/git/emailjs-imap-client/src/client.js :: No config files found.
+Info 7    [16:00:19.625] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 8    [16:00:21.628] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 2002.959904000163ms
+Info 9    [16:00:21.628] Project '/dev/null/inferredProject1*' (Inferred)
+Info 10   [16:00:21.628] 	Files (130)
+
+Info 11   [16:00:21.628] -----------------------------------------------
+Info 12   [16:00:22.967] Search path: /home/marco/git/emailjs-imap-client/src
+Info 13   [16:00:22.967] For info: /home/marco/git/emailjs-imap-client/src/imap.js :: No config files found.
+Info 14   [16:00:41.367] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 15   [16:00:41.367] Elapsed:: 0.14322200044989586ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 16   [16:00:41.367] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 17   [16:00:41.368] Elapsed:: 0.3308290019631386ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 18   [16:00:41.377] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 19   [16:00:41.377] Elapsed:: 0.03315600007772446ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 20   [16:00:41.378] Search path: /home/marco/git/emailjs-imap-client/src
+Info 21   [16:00:41.378] For info: /home/marco/git/emailjs-imap-client/src/node-socket.js :: No config files found.
+Info 22   [16:00:41.381] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 23   [16:00:41.390] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 1 structureChanged: true Elapsed: 8.541390001773834ms
+Info 24   [16:00:41.390] Project '/dev/null/inferredProject2*' (Inferred)
+Info 25   [16:00:41.390] 	Files (20)
+
+Info 26   [16:00:41.390] -----------------------------------------------
+Info 27   [16:00:41.921] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 28   [16:00:41.921] Elapsed:: 0.029130998998880386ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 29   [16:00:42.130] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 30   [16:00:42.150] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 2 structureChanged: true Elapsed: 20.493411999195814ms
+Info 31   [16:00:42.150] Project '/dev/null/inferredProject2*' (Inferred)
+Info 32   [16:00:42.151] 	Files (99)
+
+Info 33   [16:00:42.151] -----------------------------------------------
+Info 34   [16:00:43.362] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 35   [16:00:43.362] Elapsed:: 0.031206000596284866ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 36   [16:00:43.362] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 37   [16:00:43.362] Elapsed:: 0.013391997665166855ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 38   [16:00:43.371] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 39   [16:00:43.371] Elapsed:: 0.01785299926996231ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#node-socket.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Err 40    [16:00:53.502] Exception on executing command {"command":"getCodeFixes","seq":62,"type":"request","arguments":{"file":"/home/marco/git/emailjs-imap-client/src/imap.js","startLine":2,"startOffset":43,"endLine":2,"endOffset":43,"errorCodes":[7016]}}:
+
+    Debug Failure. Invalid cast. The supplied value [object Object] did not pass the test 'isStringLiteral'.
+
+    Error: Debug Failure. Invalid cast. The supplied value [object Object] did not pass the test 'isStringLiteral'.
+        at Object.cast (/usr/local/lib/node_modules/typescript/lib/tsserver.js:1500:25)
+        at tryGetImportedPackageName (/usr/local/lib/node_modules/typescript/lib/tsserver.js:139695:33)
+        at Object.getCodeActions (/usr/local/lib/node_modules/typescript/lib/tsserver.js:139663:35)
+        at /usr/local/lib/node_modules/typescript/lib/tsserver.js:135493:77
+        at Object.flatMap (/usr/local/lib/node_modules/typescript/lib/tsserver.js:515:25)
+        at Object.getFixes (/usr/local/lib/node_modules/typescript/lib/tsserver.js:135493:23)
+        at /usr/local/lib/node_modules/typescript/lib/tsserver.js:149557:35
+        at Object.flatMap (/usr/local/lib/node_modules/typescript/lib/tsserver.js:515:25)
+        at Object.getCodeFixesAtPosition (/usr/local/lib/node_modules/typescript/lib/tsserver.js:149555:23)
+        at IOSession.Session.getCodeFixes (/usr/local/lib/node_modules/typescript/lib/tsserver.js:160663:64)
+        at Session.handlers.ts.Map.ts.getEntries._a.<computed> (/usr/local/lib/node_modules/typescript/lib/tsserver.js:159335:61)
+        at /usr/local/lib/node_modules/typescript/lib/tsserver.js:160963:88
+        at IOSession.Session.executeWithRequestId (/usr/local/lib/node_modules/typescript/lib/tsserver.js:160954:28)
+        at IOSession.Session.executeCommand (/usr/local/lib/node_modules/typescript/lib/tsserver.js:160963:33)
+        at IOSession.Session.onMessage (/usr/local/lib/node_modules/typescript/lib/tsserver.js:160989:35)
+        at Interface.<anonymous> (/usr/local/lib/node_modules/typescript/lib/tsserver.js:163650:31)
+        at Interface.emit (node:events:513:28)
+        at Interface._onLine (node:readline:491:10)
+        at Interface._normalWrite (node:readline:665:12)
+        at Socket.ondata (node:readline:272:10)
+        at Socket.emit (node:events:513:28)
+        at addChunk (node:internal/streams/readable:315:12)
+        at readableAddChunk (node:internal/streams/readable:289:9)
+        at Socket.Readable.push (node:internal/streams/readable:228:10)
+        at Pipe.onStreamRead (node:internal/stream_base_commons:190:23)
+Info 41   [16:00:54.520] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#imap.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 42   [16:00:54.520] Elapsed:: 0.025901000946760178ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#imap.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 43   [16:00:54.908] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 44   [16:00:54.936] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true Elapsed: 28.497586999088526ms
+Info 45   [16:00:54.936] Project '/dev/null/inferredProject1*' (Inferred)
+Info 46   [16:00:54.936] 	Files (52)
+
+Info 47   [16:00:54.936] -----------------------------------------------
+Info 48   [16:00:55.164] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 49   [16:00:55.188] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 3 structureChanged: true Elapsed: 24.070709999650717ms
+Info 50   [16:00:55.188] Different program with same set of files:: structureIsReused:: 1
+Info 51   [16:00:55.850] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 52   [16:00:55.879] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 4 structureChanged: true Elapsed: 28.439253997057676ms
+Info 53   [16:00:55.879] Project '/dev/null/inferredProject1*' (Inferred)
+Info 54   [16:00:55.879] 	Files (53)
+
+Info 55   [16:00:55.879] -----------------------------------------------
+Info 56   [16:00:56.056] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 57   [16:00:56.077] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 5 structureChanged: true Elapsed: 21.071050003170967ms
+Info 58   [16:00:56.077] Different program with same set of files:: structureIsReused:: 1
+Info 59   [16:00:57.244] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 60   [16:00:57.271] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 6 structureChanged: true Elapsed: 27.25042200088501ms
+Info 61   [16:00:57.271] Project '/dev/null/inferredProject1*' (Inferred)
+Info 62   [16:00:57.271] 	Files (129)
+
+Info 63   [16:00:57.271] -----------------------------------------------
+Info 64   [16:00:58.259] DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#imap.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
+Info 65   [16:00:58.259] Elapsed:: 0.05338199809193611ms DirectoryWatcher:: Triggered with /home/marco/git/emailjs-imap-client/src/.#imap.js :: WatchInfo: /home/marco/git/emailjs-imap-client/src 0 undefined Project: /dev/null/inferredProject1* WatchType: Failed Lookup Locations
