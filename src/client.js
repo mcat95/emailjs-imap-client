@@ -689,6 +689,15 @@ export default class Client {
       }
 
       options.errorResponseExpectsEmptyLine = true // + tagged error response expects an empty line in return
+    } else if (this._capability.indexOf('AUTH=PLAIN') >= 0) {
+      command = {
+        command: 'AUTHENTICATE',
+        attributes: [
+          { type: 'ATOM', value: 'PLAIN' },
+          { type: 'ATOM', value: Buffer.from('\x00' + auth.user + '\x00' + auth.pass || '').toString('base64'), sensitive: true }
+        ]
+      }
+      options.errorResponseExpectsEmptyLine = true // + tagged error response expects an empty line in return
     } else {
       command = {
         command: 'login',

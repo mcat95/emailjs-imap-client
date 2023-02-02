@@ -405,6 +405,30 @@ describe('browserbox unit tests', () => {
       })
     })
 
+    it('should call AUTHENTICATE', () => {
+      sinon.stub(br, 'exec').returns(Promise.resolve({}))
+      sinon.stub(br, 'updateCapability').returns(Promise.resolve(true))
+      br._capability = ['AUTH=PLAIN']
+
+      return br.login({
+        user: 'u1',
+        pass: 'p1'
+      }).then(() => {
+        expect(br.exec.callCount).to.equal(1)
+        expect(br.exec.args[0][0]).to.deep.equal({
+          command: 'AUTHENTICATE',
+          attributes: [{
+            type: 'ATOM',
+            value: 'PLAIN'
+          }, {
+            type: 'ATOM',
+            value: 'AHUxAHAx',
+            sensitive: true
+          }]
+        })
+      })
+    })
+
     it('should call XOAUTH2', () => {
       sinon.stub(br, 'exec').returns(Promise.resolve({}))
       sinon.stub(br, 'updateCapability').returns(Promise.resolve(true))
