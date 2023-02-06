@@ -693,8 +693,8 @@ export default class Client {
       command = {
         command: 'AUTHENTICATE',
         attributes: [
-          { type: 'ATOM', value: 'PLAIN' },
-          { type: 'ATOM', value: Buffer.from('\x00' + auth.user + '\x00' + auth.pass || '').toString('base64'), sensitive: true }
+          { type: 'TEXT', value: 'PLAIN' },
+          { type: 'TEXT', chunk: true, value: Buffer.from('\x00' + auth.user + '\x00' + auth.pass || '').toString('base64'), sensitive: true }
         ]
       }
       options.errorResponseExpectsEmptyLine = true // + tagged error response expects an empty line in return
