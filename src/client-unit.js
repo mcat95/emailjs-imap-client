@@ -418,10 +418,11 @@ describe('browserbox unit tests', () => {
         expect(br.exec.args[0][0]).to.deep.equal({
           command: 'AUTHENTICATE',
           attributes: [{
-            type: 'ATOM',
+            type: 'TEXT',
             value: 'PLAIN'
           }, {
-            type: 'ATOM',
+            chunk: true,
+            type: 'TEXT',
             value: 'AHUxAHAx',
             sensitive: true
           }]
