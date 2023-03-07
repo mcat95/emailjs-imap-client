@@ -126,7 +126,8 @@ export default class Imap {
         useSecureTransport: this.secureMode,
         ca: this.options.ca,
         minTLSVersion: this.options.minTLSVersion,
-        maxTLSVersion: this.options.maxTLSVersion
+        maxTLSVersion: this.options.maxTLSVersion,
+        proxy: this.options.proxy
       })
 
       // allows certificate handling for platform w/o native tls support
