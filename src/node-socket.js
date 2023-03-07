@@ -1,6 +1,7 @@
 import { propOr } from 'ramda'
 import net from 'net'
 import tls from 'tls'
+import httpProxyClient from './http-proxy-client.js'
 
 export default class TCPSocket {
   static open (host, port, options = {}) {
@@ -18,19 +19,34 @@ export default class TCPSocket {
     if (this.binaryType !== 'arraybuffer') {
       throw new Error('Only arraybuffers are supported!')
     }
-
-    this._socket = this.ssl
-      ? tls.connect({
-        port: this.port,
-        host: this.host,
-        minVersion: options.minTLSVersion || tls.DEFAULT_MIN_VERSION,
-        maxVersion: options.maxTLSVersion || tls.DEFAULT_MAX_VERSION,
-        servername: this.host // SNI
-      }, () => this._emit('open'))
-      : net.connect(this.port, this.host, () => this._emit('open'))
-
-    // add all event listeners to the new socket
-    this._attachListeners()
+    if (options.proxy) {
+      this._socket = httpProxyClient(options.proxy, this.port, this.host, err => {
+        if (err) return this._emit('error', err)
+        // Upgrade to SSL connection if using secure connection
+        if (this.ssl) {
+          this._socket = tls.connect({
+            socket: this._socket,
+            host: this.host,
+            servername: this.host // SNI
+          }, () => { this.ssl = true })
+        }
+        this._attachListeners()
+        this._emit('open')
+      })
+    } else {
+      this._socket = this.ssl ? (
+        tls.connect({
+          port: this.port,
+          host: this.host,
+          minVersion: options.minTLSVersion || tls.DEFAULT_MIN_VERSION,
+          maxVersion: options.maxTLSVersion || tls.DEFAULT_MAX_VERSION,
+          servername: this.host // SNI
+        }, () => this._emit('open'))) : (
+        net.connect(this.port, this.host, () => this._emit('open'))
+      )
+      // add all event listeners to the new socket
+      this._attachListeners()
+    }
   }
 
   _attachListeners () {
@@ -93,7 +109,11 @@ export default class TCPSocket {
     if (this.ssl) return
 
     this._removeListeners()
-    this._socket = tls.connect({ socket: this._socket }, () => { this.ssl = true })
+    this._socket = tls.connect({
+      host: this.host,
+      servername: this.host, // SNI
+      socket: this._socket
+    }, () => { this.ssl = true })
     this._attachListeners()
   }
 }
