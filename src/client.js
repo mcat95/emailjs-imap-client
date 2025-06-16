@@ -129,6 +129,7 @@ export default class Client {
       try {
         await this.updateId(this._clientId)
       } catch (err) {
+        if (err.message.includes('Socket closed unexpectedly')) throw err
         this.logger.warn('Failed to update server id!', err.message)
       }
 
