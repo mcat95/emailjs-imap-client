@@ -129,7 +129,7 @@ export default class Client {
       try {
         await this.updateId(this._clientId)
       } catch (err) {
-        if (err.message.includes('Socket closed unexpectedly')) throw err
+        if (['Socket closed unexpectedly', 'Socket timed out'].some(txt => err.message.includes(txt))) throw err
         this.logger.warn('Failed to update server id!', err.message)
       }
 
