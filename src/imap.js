@@ -500,16 +500,23 @@ export default class Imap {
               command.set(uint8Array, index)
               index += uint8Array.length
             }
+            const bufferNotFinished = LFidx < buf.length - 1
+            if (!bufferNotFinished) {
+              // clear the timeout when an entire command has arrived
+              // and not waiting on more data for next command
+              // It's important to do this **before** yielding the command
+              // because if the command sends new commands, the timeout may
+              // have been updated and we'd be clearing the timeout for the
+              // new command, which would cause the connection to get 'stuck'
+              clearTimeout(this._socketTimeoutTimer)
+              this._socketTimeoutTimer = null
+            }
             yield command
-            if (LFidx < buf.length - 1) {
+            if (bufferNotFinished) {
               buf = new Uint8Array(buf.subarray(LFidx + 1))
               this._incomingBuffers.push(buf)
               i = 0
             } else {
-              // clear the timeout when an entire command has arrived
-              // and not waiting on more data for next command
-              clearTimeout(this._socketTimeoutTimer)
-              this._socketTimeoutTimer = null
               return
             }
           } else {
@@ -570,7 +577,7 @@ export default class Imap {
         this._connectionReady = true
         // TODO: This should fix the issue where the timeout is cleared by the buffer finishing just after it's set by the send command caused by onready.
         // However, the settimeout causes a test to fail. I've to look into it
-        setTimeout(() => this.onready && this.onready(), 0)
+        this.onready && this.onready()
       }
     }
   }
