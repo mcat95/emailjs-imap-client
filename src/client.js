@@ -83,6 +83,7 @@ export default class Client {
     this.client = new ImapClient(host, port, options) // IMAP client object
 
     // Event Handlers
+    this.client.onCommandJustSent = (...args) => this.onCommandJustSent && this.onCommandJustSent(...args)
     this.client.onerror = this._onError.bind(this)
     this.client.oncert = (cert) => (this.oncert && this.oncert(cert)) // allows certificate handling for platforms w/o native tls support
     this.client.onidle = () => this._onIdle() // start idling
@@ -740,6 +741,8 @@ export default class Client {
    * @param {Array} acceptUntagged a list of untagged responses that will be included in 'payload' property
    */
   async exec (request, acceptUntagged, options) {
+    if (this._state === STATE_LOGOUT) throw new Error('Cannot send command in lougout/closed state')
+
     this.breakIdle()
     const response = await this.client.enqueueCommand(request, acceptUntagged, options)
     if (response && response.capability) {
@@ -934,7 +937,8 @@ export default class Client {
    * @param {Number} newState The state you want to change to
    */
   _changeState (newState) {
-    if (newState === this._state) {
+    // LOGOUT is a final state, once we enter, there is no going back
+    if (newState === this._state || this._state === STATE_LOGOUT) {
       return
     }
 

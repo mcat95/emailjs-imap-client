@@ -675,6 +675,7 @@ export default class Imap {
     var data = this._currentCommand.data.shift()
 
     this.send(data + (!this._currentCommand.data.length ? EOL : ''))
+    this.onCommandJustSent && this.onCommandJustSent(data)
     return this.waitDrain
   }
 
