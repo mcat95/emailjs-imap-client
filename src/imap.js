@@ -167,6 +167,7 @@ export default class Imap {
   close (error) {
     return new Promise((resolve) => {
       var tearDown = () => {
+        this.logger.debug('Tearing connection down')
         // fulfill pending promises
         this._clientQueue.forEach(cmd => cmd.callback(error))
         if (this._currentCommand) {
@@ -567,7 +568,9 @@ export default class Imap {
       // first response from the server, connection is now usable
       if (!this._connectionReady) {
         this._connectionReady = true
-        this.onready && this.onready()
+        // TODO: This should fix the issue where the timeout is cleared by the buffer finishing just after it's set by the send command caused by onready.
+        // However, the settimeout causes a test to fail. I've to look into it
+        setTimeout(() => this.onready && this.onready(), 0)
       }
     }
   }
